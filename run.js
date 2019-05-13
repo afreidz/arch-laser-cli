@@ -69,7 +69,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         title: 'Backup rc.lua',
         enabled: async () => {
           let result = await exists(path.join(awesomeDir, 'rc.lua'))
-          return result === 'exists'
+          return result
         },
         task: async () => {
           await await copy(path.join(awesomeDir, 'rc.lua'), path.join(awesomeDir, 'rc.lua.back'), { overwrite: true })
@@ -94,7 +94,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         title: 'Backup existing GTK config',
         enabled: async () => {
           let result = await exists(path.join(gtkDir, 'gtk.css'))
-          return result === 'exists'
+          return result
         },
         task: async () => {
           await copy(path.join(gtkDir, 'gtk.css'), path.join(gtkDir, 'gtk.css.backup'), { overwrite: true })
@@ -118,7 +118,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         title: 'Backup existing Rofi config',
         enabled: async () => {
           let result = await exists(path.join(rofiDir, 'config'))
-          return result === 'exists'
+          return result
         },
         task: async () => {
           await copy(path.join(rofiDir, 'config'), path.join(rofiDir, 'config.backup'), { overwrite: true })
@@ -142,7 +142,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         title: 'Backup existing Termite config',
         enabled: async () => {
           let result = await exists(path.join(termiteDir, 'config'))
-          return result === 'exists'
+          return result
         },
         task: async () => {
           await copy(path.join(termiteDir, 'config'), path.join(termiteDir, 'config.backup'), { overwrite: true })
