@@ -1,0 +1,23 @@
+{
+  "name": "arch-laser",
+  "version": "1.0.0",
+  "description": "CLI Tool to manage Arch Laser Theme",
+  "bin": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andy Freidenfelds <andy.freidenfelds@grainger.com>",
+  "license": "ISC",
+  "dependencies": {
+    "adm-zip": "^0.4.13",
+    "fs-extra": "^8.0.0",
+    "listr": "^0.14.3",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "node-fetch": "^2.5.0",
+    "nodegit": "^0.24.3",
+    "rimraf": "^2.6.3",
+    "sudo-prompt": "^8.2.5",
+    "unzipper": "^0.9.11"
+  }
+}
