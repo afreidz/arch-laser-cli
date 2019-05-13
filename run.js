@@ -176,7 +176,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
     }
   }])
 
-  console.log('Sudo may be required for some of these commands. Please enter your sudo password')
+  console.log('Sudo may be required for some of these commands. Please enter your sudo password if prompted')
   exec('sudo echo "done."', {}, (err, out) => {
     if (!err) tasks.run().catch(console.error)
   })
