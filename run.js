@@ -1,11 +1,11 @@
 #! /usr/bin/env node
+const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const Listr = require('listr')
 const copy = require('./copy')
 const clean = require('./clean')
 const ensure = require('./ensure')
-const exists = require('./exists')
 const download = require('./download')
 const { exec } = require('child_process')
 const configDir = path.join(os.homedir(), '.config')
@@ -17,22 +17,18 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
   let awesomeDir = path.join(configDir, 'awesome')
   let awesomeThemeGit = path.join(awesomeGit, 'themes')
   let awesomeThemeDir = path.join(awesomeDir, 'themes')
-  let awesomeConfigExists = await exists(path.join(awesomeDir, 'rc.lua'))
 
   // GTK Config
   let gtkGit = path.join(tempDir, 'arch-laser-master/gtk-3.0')
   let gtkDir = path.join(configDir, 'gtk-3.0')
-  let gtkConfigExists = await exists(path.join(gtkDir, 'gtk.css'))
 
   // Rofi Config
   let rofiGit = path.join(tempDir, 'arch-laser-master/rofi')
   let rofiDir = path.join(configDir, 'rofi')
-  let rofiConfigExists = await exists(path.join(rofiDir, 'config'))
 
   // Termite Config
   let termiteGit = path.join(tempDir, 'arch-laser-master/termite')
   let termiteDir = path.join(configDir, 'termite')
-  let termiteConfigExists = await exists(path.join(termiteDir, 'config'))
 
   // Slim Theme
   let slimGit = path.join(tempDir, 'arch-laser-master/slim')
@@ -40,8 +36,6 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
     ? path.join(path.resolve('/'), 'usr/local/slim')
     : path.join(path.resolve('/'), 'usr/share/slim')
   let slimThemeDir = path.join(slimDir, 'themes')
-
-  console.log(awesomeConfigExists, gtkConfigExists, rofiConfigExists, termiteConfigExists)
 
   const tasks = new Listr([{
     title: 'Ensure .config directory exists',
@@ -73,7 +67,9 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         }
       }, {
         title: 'Backup rc.lua',
-        enabled: awesomeConfigExists,
+        skip: () => {
+          return !fs.readFileSync(path.join(awesomeDir, 'rc.lua'))
+        },
         task: async () => {
           await await copy(path.join(awesomeDir, 'rc.lua'), path.join(awesomeDir, 'rc.lua.back'), { overwrite: true })
         }
@@ -95,7 +91,9 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         }
       }, {
         title: 'Backup existing GTK config',
-        enabled: gtkConfigExists,
+        skip: () => {
+          return !fs.readFileSync(path.join(gtkDir, 'gtk.css'))
+        },
         task: async () => {
           await copy(path.join(gtkDir, 'gtk.css'), path.join(gtkDir, 'gtk.css.backup'), { overwrite: true })
         }
@@ -116,7 +114,9 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         }
       }, {
         title: 'Backup existing Rofi config',
-        enabled: rofiConfigExists,
+        skip: () => {
+          return !fs.readFileSync(path.join(rofiDir, 'config'))
+        },
         task: async () => {
           await copy(path.join(rofiDir, 'config'), path.join(rofiDir, 'config.backup'), { overwrite: true })
         }
@@ -137,7 +137,9 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
         }
       }, {
         title: 'Backup existing Termite config',
-        enabled: termiteConfigExists,
+        skip: () => {
+          return !fs.readFileSync(path.join(termiteDir, 'config'))
+        },
         task: async () => {
           await copy(path.join(termiteDir, 'config'), path.join(termiteDir, 'config.backup'), { overwrite: true })
         }
