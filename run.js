@@ -68,10 +68,12 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
       }, {
         title: 'Backup rc.lua',
         skip: () => {
-          return !fs.readFileSync(path.join(awesomeDir, 'rc.lua'))
+          try { fs.readFileSync(path.join(awesomeDir, 'rc.lua')) } catch (err) { return 'No existing file present' }
         },
         task: async () => {
-          await await copy(path.join(awesomeDir, 'rc.lua'), path.join(awesomeDir, 'rc.lua.back'), { overwrite: true })
+          if (fs.readFileSync(path.join(awesomeDir, 'rc.lua'))) {
+            await await copy(path.join(awesomeDir, 'rc.lua'), path.join(awesomeDir, 'rc.lua.back'), { overwrite: true })
+          }
         }
       }, {
         title: 'Copying AwesomeWM theme files',
@@ -92,7 +94,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
       }, {
         title: 'Backup existing GTK config',
         skip: () => {
-          return !fs.readFileSync(path.join(gtkDir, 'gtk.css'))
+          try { fs.readFileSync(path.join(gtkDir, 'gtk.css')) } catch (err) { return 'No existing file present' }
         },
         task: async () => {
           await copy(path.join(gtkDir, 'gtk.css'), path.join(gtkDir, 'gtk.css.backup'), { overwrite: true })
@@ -115,7 +117,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
       }, {
         title: 'Backup existing Rofi config',
         skip: () => {
-          return !fs.readFileSync(path.join(rofiDir, 'config'))
+          try { fs.readFileSync(path.join(rofiDir, 'config')) } catch (err) { return 'No config file present' }
         },
         task: async () => {
           await copy(path.join(rofiDir, 'config'), path.join(rofiDir, 'config.backup'), { overwrite: true })
@@ -138,7 +140,7 @@ const tempDir = path.join(os.homedir(), 'tmp', 'arch-laser')
       }, {
         title: 'Backup existing Termite config',
         skip: () => {
-          return !fs.readFileSync(path.join(termiteDir, 'config'))
+          try { fs.readFileSync(path.join(termiteDir, 'config')) } catch (err) { return 'No config file present' }
         },
         task: async () => {
           await copy(path.join(termiteDir, 'config'), path.join(termiteDir, 'config.backup'), { overwrite: true })
